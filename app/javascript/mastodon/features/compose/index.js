@@ -18,6 +18,12 @@ import { mascot } from '../../initial_state';
 import Icon from 'mastodon/components/icon';
 import { logOut } from 'mastodon/utils/log_out';
 
+//import cutsom mascot images
+import siberianhuskyUIPlane from '../../../images/siberianhusky_ui_plane.svg';
+
+//get theme user choosing
+import { nameTheme } from '../../../kemoshico/getthemename';
+
 const messages = defineMessages({
   start: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
   home_timeline: { id: 'tabs_bar.home', defaultMessage: 'Home' },
@@ -116,22 +122,42 @@ class Compose extends React.PureComponent {
       );
     }
 
-    return (
-      <div className='drawer' role='region' aria-label={intl.formatMessage(messages.compose)}>
-        {header}
-
-        {(multiColumn || isSearchPage) && <SearchContainer /> }
-
-        <div className='drawer__pager'>
-          {!isSearchPage && <div className='drawer__inner' onFocus={this.onFocus}>
-            <NavigationContainer onClose={this.onBlur} />
-
-            <ComposeFormContainer />
-
-            <div className='drawer__inner__mastodon'>
-              <img alt='' draggable='false' src={mascot || elephantUIPlane} />
-            </div>
-          </div>}
+//if theme-siberia is chosen, change mascot
+    if (nameTheme.indexOf(theme-siberia) !== -1) {
+      return (
+        <div className='drawer' role='region' aria-label={intl.formatMessage(messages.compose)}>
+          {header}
+  
+          {(multiColumn || isSearchPage) && <SearchContainer /> }
+  
+          <div className='drawer__pager'>
+            {!isSearchPage && <div className='drawer__inner' onFocus={this.onFocus}>
+              <NavigationContainer onClose={this.onBlur} />
+  
+              <ComposeFormContainer />
+  
+              <div className='drawer__inner__mastodon'>
+                <img alt='' draggable='false' src={mascot || siberianhuskyUIPlane} />
+              </div>
+            </div>}      
+    } else{
+      return (
+        <div className='drawer' role='region' aria-label={intl.formatMessage(messages.compose)}>
+          {header}
+  
+          {(multiColumn || isSearchPage) && <SearchContainer /> }
+  
+          <div className='drawer__pager'>
+            {!isSearchPage && <div className='drawer__inner' onFocus={this.onFocus}>
+              <NavigationContainer onClose={this.onBlur} />
+  
+              <ComposeFormContainer />
+  
+              <div className='drawer__inner__mastodon'>
+                <img alt='' draggable='false' src={mascot || elephantUIPlane} />
+              </div>
+            </div>}
+          }
 
           <Motion defaultStyle={{ x: isSearchPage ? 0 : -100 }} style={{ x: spring(showSearch || isSearchPage ? 0 : -100, { stiffness: 210, damping: 20 }) }}>
             {({ x }) => (
