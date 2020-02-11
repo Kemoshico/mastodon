@@ -18,11 +18,13 @@ import { mascot } from '../../initial_state';
 import Icon from 'mastodon/components/icon';
 import { logOut } from 'mastodon/utils/log_out';
 
-//import cutsom mascot images
+//カスタムマスコット画像を読み込む(16行目参照)
 import siberianhuskyUIPlane from '../../../images/siberianhusky_ui_plane.svg';
 
-//get theme user choosing
-import { nameTheme } from '../../../kemoshico/getthemename';
+//body要素のclassを取得する
+var nameTheme = document.body.className;
+
+//126行目あたりに画像を読み込む部分があるので条件分岐させる
 
 const messages = defineMessages({
   start: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
@@ -122,8 +124,10 @@ class Compose extends React.PureComponent {
       );
     }
 
-//if theme-siberia is chosen, change mascot
-    if (nameTheme.indexOf(theme-siberia) !== -1) {
+//画像と対応するテーマに設定しているかどうか、nameTheme.indexOf('theme-')が正の値を取る(対応するテーマ)か-1(違うテーマ)かで判別
+    
+    if (nameTheme.indexOf('theme-siberia') <= 1) {
+      //テーマ：siberiaが選択されているとき
       return (
         <div className='drawer' role='region' aria-label={intl.formatMessage(messages.compose)}>
           {header}
@@ -141,6 +145,7 @@ class Compose extends React.PureComponent {
               </div>
             </div>}      
     } else{
+      //テーマ：siberiaが選択されていないとき(defaultと同じ)
       return (
         <div className='drawer' role='region' aria-label={intl.formatMessage(messages.compose)}>
           {header}
