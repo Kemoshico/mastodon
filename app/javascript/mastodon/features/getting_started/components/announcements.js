@@ -16,6 +16,14 @@ import AnimatedNumber from 'mastodon/components/animated_number';
 import TransitionMotion from 'react-motion/lib/TransitionMotion';
 import spring from 'react-motion/lib/spring';
 
+//カスタムマスコット画像を読み込む(10行目参照)
+import siberianhuskyUIPlane ftom 'mastodon/../images/siberianhusky_ui_plane.svg';
+
+//body要素のclassを取得する
+var nameTheme = document.body.className;
+
+//412行目あたりに画像を読み込む部分があるので条件分岐させる
+
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   previous: { id: 'lightbox.previous', defaultMessage: 'Previous' },
@@ -402,6 +410,41 @@ class Announcements extends ImmutablePureComponent {
       return null;
     }
 
+//画像と対応するテーマに設定しているかどうか、nameTheme.indexOf('theme-')が正の値を取る(対応するテーマ)か-1(違うテーマ)かで判別
+
+  if(nameTheme.indexOf('theme-siberia') <= 1){
+      //テーマ：siberiaが選択されているとき
+      return (
+      <div className='announcements'>
+        <img className='announcements__mastodon' alt='' draggable='false' src={mascot || siberianhuskyUIPlane} />
+
+        <div className='announcements__container'>
+          <ReactSwipeableViews animateHeight={!reduceMotion} adjustHeight={reduceMotion} index={index} onChangeIndex={this.handleChangeIndex}>
+            {announcements.map((announcement, idx) => (
+              <Announcement
+                key={announcement.get('id')}
+                announcement={announcement}
+                emojiMap={this.props.emojiMap}
+                addReaction={this.props.addReaction}
+                removeReaction={this.props.removeReaction}
+                intl={intl}
+                selected={index === idx}
+              />
+            ))}
+          </ReactSwipeableViews>
+
+          {announcements.size > 1 && (
+            <div className='announcements__pagination'>
+              <IconButton disabled={announcements.size === 1} title={intl.formatMessage(messages.previous)} icon='chevron-left' onClick={this.handlePrevClick} size={13} />
+              <span>{index + 1} / {announcements.size}</span>
+              <IconButton disabled={announcements.size === 1} title={intl.formatMessage(messages.next)} icon='chevron-right' onClick={this.handleNextClick} size={13} />
+            </div>
+          )}
+        </div>
+      </div>
+    );
+}else{
+    //テーマ：siberiaが選択されていないとき(defaultと同じ)
     return (
       <div className='announcements'>
         <img className='announcements__mastodon' alt='' draggable='false' src={mascot || elephantUIPlane} />
@@ -431,6 +474,8 @@ class Announcements extends ImmutablePureComponent {
         </div>
       </div>
     );
+
+}
   }
 
 }
